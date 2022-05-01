@@ -1,0 +1,35 @@
+.form{
+    text-align: center;
+    font-size: 1.5em;
+}
+.form input{
+    margin-top: 3em;
+    font-size: 0.8em;
+    text-align: center;
+    height: 2em;
+}
+.form ul{
+    list-style: none;
+    display: flex;
+    font-size: .6em;
+    justify-content: center;
+}
+.form li{
+    margin: 0;
+    border: solid 1px;
+    padding:  0 2em;
+}
+button{
+    margin:  1em;
+    border-radius: 20%;
+    color: black;
+    background-color: honeydew;
+    padding: 0.5em;
+    border: none;
+    cursor: pointer;
+}
+input{
+    color: white;
+    border: solid  none 10%;
+    border-radius: 10px;
+}

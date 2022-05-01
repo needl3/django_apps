@@ -1,0 +1,101 @@
+/*Scrollbar customization*/
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(50,50,50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(100,100,100);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  cursor: pointer;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+html{
+    background-color: rgb(31, 31, 31);
+    color: white;
+    font-family: 'Poppins';
+}
+nav{
+    background-color: rgb(66, 44, 44);
+    display: flex;
+    width: 100%;
+}
+nav h2 a{
+    margin: 0;
+    padding: 0;
+}
+nav h2{
+    letter-spacing: 0.2em;
+    background-color: rgb(102, 99, 99);
+    color:antiquewhite;
+    padding: 0.5em;
+    margin: 0;
+}
+nav span{
+    color:  aqua;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    margin: 1em;
+    color: white
+}
+nav li, nav a{
+    margin: auto 1em;
+}
+nav li:hover{
+    color: rgb(243, 140, 140);
+    -webkit-transform: scale(1.2);
+    transition: 0.1s;
+    border-bottom: solid rgb(243, 140, 140) 1px;
+}
+nav img{
+    width: 2em;
+}
+nav input{
+    background-color: black;
+    color: white;
+    border: 0px;
+    width: 20em;
+    height: 2em;
+    text-align: center;
+    border-radius: 0.4em;
+}
+.flex-nav-middle, .flex-nav-right{
+    display:flex;
+    white-space: nowrap;
+}
+.flex-nav-right{
+    margin-left: auto;
+}
+.flex-nav-middle li{
+    margin: auto 1em;
+    color: white;
+}
+
+body{
+    margin: 0;
+}
+
+footer {
+    text-align: center;
+    font-size: 1.5em;
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    word-spacing: 0.1em;
+    width: 100%;
+}
+footer a:hover{
+    color: rgb(243, 140, 140);
+    transition: 0.1s;
+    border-bottom: solid rgb(243, 140, 140) 1px;
+}

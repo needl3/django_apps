@@ -1,0 +1,23 @@
+{% extends 'aniwatch/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'aniwatch/css/query.css' %}">
+{% endblock style %}
+
+{% block body %}
+	<div class='query_container'>
+		<h2>Result for: <span>{{ Query }}</span></h2>
+		<ul class='query_set'>
+			{% for anime in Anime %}
+				<li>
+	                <a href="{% url 'aniwatch:anime' anime.Url %}">
+	                    <img src="{{ anime.Image }}" alt="{{anime.Title}}">
+	                    <p>{{ anime.Title }}</p>
+	                </a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock body %}

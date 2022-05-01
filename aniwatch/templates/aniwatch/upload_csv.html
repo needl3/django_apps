@@ -1,0 +1,28 @@
+{% extends 'aniwatch/base.html' %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'aniwatch/css/upload_csv.css' %}">
+{% endblock style %}
+
+{% block body %}
+    <div class='form'>
+        <h4>Import CSV</h4>
+        <p>Make sure the csv contains headings as</p>
+        <ul>
+            <li>Name</li>
+            <li>Image</li>
+            <li>Summary</li>
+            <li>Genre</li>
+            <li>Episodes</li>
+            <li>Status</li>
+            <li>Url</li>
+        </ul>
+        <form method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+            <input type="file" name="data"><br>
+            <input type="password" name="key" placeholder="Secret Key Here">
+            <button type="submit">Upload</button>        
+      </form>
+    </div>
+{% endblock%}

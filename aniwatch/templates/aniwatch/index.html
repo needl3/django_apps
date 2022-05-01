@@ -1,0 +1,49 @@
+{% extends 'aniwatch/base.html' %}
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'aniwatch/css/index.css' %}">
+{% endblock style %}
+
+{% block body %}
+    <div class="recent">
+        <h2>Recents</h2>
+        <ul class="recent-items">
+            {% for i in Recents %}
+                <li>
+                    <a href="{% url 'aniwatch:anime' i.Url %}">
+                        <img src="{ i.Image }" alt="{{i.Name}}-image">
+                        <p>{{ i.Name }}</p>
+                    </a>
+                </li>
+                {% endfor %}
+        </ul>
+    </div>
+    <div class="trending">
+        <h2>Trending</h2>
+        <ul class="trending-items">
+            {% for i in Trending %}
+                <li>
+                    <a href="{% url 'aniwatch:anime' i.Url %}">
+                        <img src="{{ i.Image }}" alt="{{i.Name}}-image">
+                        <p>{{ i.Title }}</p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
+    <div class="recommended">
+        <h2>Recommended</h2>
+        <ul class="recommended-items">
+            {% for i in Recommended %}
+                <li>
+                    <a href="{% url 'aniwatch:anime' i.Url %}">
+                        <img src="{{ i.Image }}" alt="{{i.Name}}-image">
+                        <p>Violet Evergarden</p>
+                    </a>
+                </li>
+           {% endfor %} 
+        </ul>
+    </div>
+{% endblock body %}

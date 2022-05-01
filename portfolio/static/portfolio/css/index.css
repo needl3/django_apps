@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap');
+
+/*Scrollbar customization*/
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(50,50,50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(100,100,100);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  cursor: pointer;
+}
+html{
+	font-family: "Roboto Mono";
+	background-color: rgb(31, 31, 31);
+	color: white;
+}
+a{
+	text-decoration: none;
+}
+li{
+	list-style: none;
+}
+nav ul{
+	display: flex;
+	justify-content: center;
+}
+nav li{
+	font-size: 1em;
+	margin: 0 1em;
+	padding-bottom: 0.6em;
+}
+nav li:hover{
+	color: aqua;
+
+	transform: scale(1.2);
+	transition: 0.2s;
+}
+nav li.selected{
+	border-bottom:  1px solid grey;
+}
+nav li a{
+	color: white;
+	font-weight: bold;
+}
+body{
+	margin: 0;
+}
+.view_container{
+	position: relative;
+	margin:  0;
+}
+.visible{
+	display: block;
+}
+.hidden{
+	display: none !important;
+	transition: 1s;
+}
+img{
+	position: absolute;
+
+}
+.image1{
+	height: 50%;
+	top: 40%;
+	left: 45%;
+}
+.image2{
+	height: 50%;
+	top: 2%;
+	left: 65%;
+}
+.image3{
+	height: 50%;
+	top: 49%;
+	left: 75%;
+}
+.gradient_container{
+	background-image: linear-gradient(to right, rgb(100, 0, 0), black);
+	width: 100%;
+	height: 100%;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	opacity: 0.4;
+}
+.bg_image{
+	background-image: url("https://wallpaperaccess.com/full/516833.jpg");
+	background-repeat: no-repeat;
+	background-blend-mode: saturation;
+
+	display: flex;
+	flex-direction: column;
+
+	padding: 1em;
+	height: 84vh;
+
+	position: relative;
+}
+.bg_text{
+	background-color: rgba(0, 0, 0, 0.5);
+	color:  rgb(0, 255, 0);
+	padding: 0.4em;
+	margin:  auto auto 0 0.5em;
+	font-size: 1.3em;
+	border-radius: 0.4em;
+	position: absolute;
+	top:  25%;
+}
+.bg_text ul{
+	padding:  0;
+	margin: 0;
+}
+.bg_text li{
+	margin: 0 2em 0.2em 0;
+	display: flex;
+	font-weight: bold;
+}
+
+.bg_text span{
+	font-size: 1em;
+	padding-left: 0.6em;
+	text-align: center;
+	font-weight: normal;
+}
+span.cursor{
+	animation: blink 1s step-start 0s infinite;
+}
+.view_container button{
+	margin-top:  auto;
+	border: 0;
+	border-radius: 0 0 1em 1em;
+	align-self: center;
+	font-size: 2em;
+	min-width: 4%;
+	background-color: #04AA66;
+	animation: beat 1s linear infinite;
+	cursor: pointer;
+	animation-delay: 10s;
+	position: absolute;
+	left: 50%;
+	top: 95%;
+}
+
+/* Section for animations  */
+@keyframes blink{
+	50%	{ opacity: 0;}
+}
+@keyframes beat{
+	50%{
+		transform: scale(1.1);
+		background-color: #04AAFF;
+		top: 93%;
+	}
+}

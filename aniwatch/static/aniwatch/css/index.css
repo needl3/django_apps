@@ -1,0 +1,32 @@
+.recent, .trending, .recommended{
+    margin: 0;
+    text-align: center;
+    align-content: center;
+}
+.recent ul, .trending ul, .recommended ul{
+    margin: 0;
+    justify-content: center;
+}
+.recent p, .trending p, .recommended p{
+    margin-top: 1em;
+    width:  85%;
+}
+.recent-items, .trending-items, .recommended-items{
+    display: flex;
+    padding: 0;
+    margin: 1em;
+    flex-wrap: wrap;
+}
+.recent-items a, .trending-items a, .recommended-items a{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.recent-items img, .trending-items img, .recommended-items img{
+    height:  20em;
+    border-radius: 1em;
+}
+.recent-items li:hover, .trending-items li:hover, .recommended-items li:hover{
+    -webkit-transform: scale(1.1);
+    transition: 0.5s;
+}

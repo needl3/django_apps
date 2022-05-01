@@ -1,0 +1,36 @@
+.query_container{
+	text-align: center;
+	margin-top: 1em;
+}
+.query_container h2{
+	margin: 2em;
+}
+.query_container span{
+	color: aqua;
+}
+.query_set{
+	display: flex;
+	flex-wrap: wrap;
+	padding: 1em;
+	justify-content: center;
+}
+.query_set li{
+	text-align: center;
+	max-height: 25em;
+	max-width: 15em;
+	overflow: hidden;
+	margin-bottom: 1em;
+}
+.query_set li:hover{
+	transform: scale(1.1);
+	transition: 0.1s;
+}
+.query_set a{
+	display: flex;
+	flex-direction: column;
+}
+.query_set img{
+	border-radius: .8em;
+	height: 100%;
+    width: 100%;
+}

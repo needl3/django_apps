@@ -1,0 +1,83 @@
+.main{
+	color: white;
+}
+.details ul{
+	margin: 0;
+	letter-spacing: 1px;
+	padding-inline: 0;
+	padding-top: 20em;
+	padding-bottom: 1em;
+	padding-left: 1em;
+	margin-bottom: 2em;
+	background-image: linear-gradient(to right,black, brown);
+	opacity: 0.8;
+}
+.details span{
+	color: aqua;
+	font-weight: bolder;
+}
+.details ul li{
+	padding-top:1em;
+}
+.player{
+	height: 38em;
+	display: flex;
+	justify-content: center;
+}
+.player iframe{
+	width: 80%;
+	height: 100%;
+}
+.below{
+	margin: 1em;
+}
+.servers{
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+}
+.servers ul{
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+}
+.servers ul li{
+	padding: .5em;
+	margin: .1em;
+	background-color: grey;
+	text-align: left;
+	cursor: pointer;
+	border-radius: .3em;
+}
+h2{
+	color: cyan;
+}
+.episode_list ul{
+	display: flex;
+	flex-wrap: wrap;
+	background-color: black;
+	padding: 0;
+	overflow-y: scroll;
+	max-height: 10em;
+}
+.episode_list ul li{
+	padding: .5em;
+	margin: 0;
+	background-color: rgb(100, 100, 100);;
+	text-align: left;
+	cursor: pointer;
+	border-radius: .3em;
+	scroll-behavior: smooth;
+}
+.episode_list ul li:hover{
+	background-color: cyan;
+	color: black;
+}
+.selected{
+	color: cyan;
+	background-color: green;
+	padding: .2em;
+	border-radius: 0.2em;
+}

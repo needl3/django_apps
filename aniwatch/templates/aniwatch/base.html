@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>
+            AniWatch
+        </title>
+        <link rel="stylesheet" href="{% static 'aniwatch/css/base.css' %}">
+        <script type="text/javascript" src="{% static 'aniwatch/js/base.js' %}"></script>
+        {% block style %}
+        {% endblock style %}
+    </head>
+    <nav>
+        <h2>
+            <a href="{% url 'aniwatch:index' %}">ANI<span>WATCH</span></a>
+        </h2>
+    
+        <div class="flex-nav-middle">
+            <a href="#"><li class="top">Top Rated</li></a>
+            <a href="#"><li class="hot"> Hot</li></a>
+            <a href="#"><li class="most-watched">Most Watched</li></a>
+            <a href="#"><li class="genres">Genres</li></a>
+            <a href="#"><li class="ongoing">Ongoing</li></a>
+        </div>
+        <div class="flex-nav-right">
+            <li class="inp" style="display: none">
+                <form action="{% url 'aniwatch:query' %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="anime_name" placeholder="Anime Name Here(Original)">
+                </form>
+            </li>
+            <li class="search">
+                <img src="{% static 'aniwatch/images/svgs/search.svg' %}" alt="search">
+            </li>
+            <li class="theme">
+                <img src="{% static 'aniwatch/images/svgs/sun.svg' %}" alt="mode">
+            </li>
+            <li class="settings">
+                <img src="{% static 'aniwatch/images/svgs/settings.svg' %}" alt="settings">
+            </li>
+        </div>
+    </nav>
+    <body>
+        {% block body %}
+            
+        {% endblock body %}
+    </body>
+    <footer>Created with &hearts; by<a href="https://github.com/needl3">Needle</a></footer>
+    {% block scripts %}
+    {% endblock scripts %}
+</html>

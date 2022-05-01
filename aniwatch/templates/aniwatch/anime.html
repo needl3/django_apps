@@ -1,0 +1,62 @@
+{% extends 'aniwatch/base.html' %}
+{% load template_filters %}
+
+{% load static %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'aniwatch/css/anime.css' %}">
+    <style>
+        .main{
+            background-image: url("{{ Anime.image_link }}");
+        }
+    </style>
+{% endblock style %}
+    <h1>{{ Anime.name }}</h1>
+{% block body %}
+    <div class='main'{% if iframe %} style="display:none" {% endif %}>
+        <div class='details'>
+            <ul>
+                <li class='title'><i><span>Name:   </span></i>{{ Anime.name }}</li>
+                <li class='genre'><i><span>Genre:   </span></i>{{ Anime.genre|joiner }}</li>
+                <li class='status'><i><span>Status:   </span></i>{{ Anime.status }}</li>
+                <li class='type'><i><span>Type:   </span></i> Not Indexed</li>
+                <li class='description'><i><span>Description:   </span></i>{{ Anime.summary }}</li>
+                <li style="display:none" class="associated_url" data-url="{{ Anime.url }}"></li>
+            </ul>
+        </div>
+    </div>
+    {% if iframe %}    
+        <h2 style='text-align: center; letter-spacing: 3px;'>{{ Anime.name }} | Episode:{{ iframe }}</h2>
+    {% endif %}
+    <div class='player' {% if not iframe %} style="display:none" {% endif %}>
+        <iframe src="https://{{ Servers.0.Url }}" allowfullscreen="true" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    </div>
+    <div class='below'>
+        <div class='servers' style="display: none;">
+            <h3>Available Servers</h3>
+            <ul>
+                <!-- Place Server Lists here from javascript or prerendered --->
+                {% for i in Servers %}
+                    <li><a href="#" data-url='{{ i.Url }}'>{{ i.Name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class='episode_list'>
+            <h2>Episodes</h2>
+            <ul class='list'>
+                {% for i in Anime.episodes|range_ %}
+                <a href="{% url 'aniwatch:anime_play' Anime.name i %}" {% if i == iframe %}class='selected'{% endif %}>
+                    <li class='ep_{{ i }}'> Ep: {{i}} </li>
+                </a>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class = 'comments_container'>
+            <h2>Comments</h2>
+            <h3>Not Implemented</h3>
+        </div>
+    </div>
+{% endblock body %}
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'aniwatch/js/anime.js' %}"></script>
+{% endblock scripts %}
