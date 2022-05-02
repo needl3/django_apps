@@ -84,6 +84,7 @@ function getNextSelection() {
 			found_selected = true;
 		}
 	}
+	return li_elements[0].classList[0];
 }
 
 /* Below are methods to update active pages */
