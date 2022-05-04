@@ -45,7 +45,7 @@
             <h2>Episodes</h2>
             <ul class='list'>
                 {% for i in Anime.episodes|range_ %}
-                <a href="{% url 'aniwatch:anime_play' Anime.name i %}" {% if i == iframe %}class='selected'{% endif %}>
+                <a href="{% url 'aniwatch:anime_play' Anime.url i %}" {% if i == iframe %}class='selected'{% endif %}>
                     <li class='ep_{{ i }}'> Ep: {{i}} </li>
                 </a>
                 {% endfor %}

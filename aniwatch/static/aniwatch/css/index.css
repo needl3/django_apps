@@ -9,21 +9,22 @@
 }
 .recent p, .trending p, .recommended p{
     margin-top: 1em;
-    width:  85%;
 }
 .recent-items, .trending-items, .recommended-items{
     display: flex;
     padding: 0;
-    margin: 1em;
     flex-wrap: wrap;
 }
 .recent-items a, .trending-items a, .recommended-items a{
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow: hidden;
+    height: auto;
+    max-width: 10em;
 }
 .recent-items img, .trending-items img, .recommended-items img{
-    height:  20em;
+    height:  10em;
     border-radius: 1em;
 }
 .recent-items li:hover, .trending-items li:hover, .recommended-items li:hover{

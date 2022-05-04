@@ -20,9 +20,9 @@
         </ul>
     </div>
     <div class="trending">
-        <h2>Trending</h2>
+        <h2>New Releases</h2>
         <ul class="trending-items">
-            {% for i in Trending %}
+            {% for i in New %}
                 <li>
                     <a href="{% url 'aniwatch:anime' i.Url %}">
                         <img src="{{ i.Image }}" alt="{{i.Name}}-image">
@@ -40,7 +40,7 @@
                 <li>
                     <a href="{% url 'aniwatch:anime' i.Url %}">
                         <img src="{{ i.Image }}" alt="{{i.Name}}-image">
-                        <p>Violet Evergarden</p>
+                        <p>{{ i.Title }}</p>
                     </a>
                 </li>
            {% endfor %} 
