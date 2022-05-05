@@ -9,7 +9,6 @@ from . import models
 from .templatetags import scraper
 
 def index(request):
-    scraper.DatabaseManagement().updateNewReleases(models)
     # Store dict containing trending and recommended
     if request.method == 'POST':
         return render(request, 'aniwatch/error.html', {'method':'Please don\'t POST'})

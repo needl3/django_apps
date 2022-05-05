@@ -288,7 +288,6 @@ class DatabaseManagement:
 			If some in my database are left out, check if they are completed and assign status accordingly
 		'''
 		new_list = ScrapeAnime().scrapeNewSection()	# Returns list of {Name:episode}
-		print(new_list)
 		for n,ep in new_list.items():
 			try:
 				models.Video.objects.get(name=n)
