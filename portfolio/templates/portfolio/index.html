@@ -7,8 +7,7 @@
 	<title>Anish Chapagai | Portfolio</title>
 
 	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/index.css' %}">
-	<script type="text/javascript" src="{% static 'portfolio/js/index.js' %}"></script>
-
+	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/projects.css' %}">
 </head>
 <body>
 <!-- 	<embed src="loyalist.mp3" width="0" height="0" loop="true" autostart="true" hidden="true" /> -->
@@ -36,11 +35,47 @@
 		<div id="academics" class="">
 			
 		</div>
-		<div id="projects" class="hidden"></div>
+		<div id="projects" class="hidden">
+			<div class='projects_container'>
+				<ul>
+					{% for i in Projects %}
+						<li class='project'>
+							<div class="title_bar">
+								<div class='title'>{{ i.Name }}</div>
+								<ul class='tools_container'>
+									{% for t in i.Tools %}	
+										<li class='tools'>
+											<img src="{% static 'portfolio/assets/icons/' %}{{ t }}.svg">
+										</li>
+									{% endfor %}
+								</ul>
+								<span></span>
+							</div>
+							<div class='description'>
+								<div class='text'>
+									{{ i.Description }}
+								</div>
+								<div class='photo'>
+									<a href="{{ i.ProjectLink }}">
+										<img src="{{ i.Image }}">
+										<div class='github_popup'>
+											<span>
+												<img src="{{ iconGithub }}">
+											</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</li>
+					{% endfor %}	
+				</ul>
+			</div>
+		</div>
 		<div id="participations" class="hidden"></div>
 		<div id="tools" class="hidden"></div>
 		<div id="contact" class="hidden"></div>
 		<button class="move_down" class="hidden">↓</button>
 	</div>
 </body>
+<script type="text/javascript" src="{% static 'portfolio/js/index.js' %}"></script>
 </html>

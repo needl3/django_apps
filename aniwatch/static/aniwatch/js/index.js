@@ -9,4 +9,4 @@ function splashscreen(){
 		splashscreen.remove()
 	}, 2000);
 }
-splashscreen()
+//splashscreen()

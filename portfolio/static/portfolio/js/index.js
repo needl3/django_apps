@@ -4,7 +4,13 @@
 This is the entry point of the script 
 Runs after the window loads completely
 */
+
 window.onload = ()=>{
+	indexEvents();
+	addEventHandlersForProjects();
+}
+
+function indexEvents(){
 	ul_container = document.getElementsByTagName("nav")[0].getElementsByTagName("ul")[0];
 
 	/*Assign Event Listeners in nav elements*/
@@ -110,4 +116,30 @@ function updateSelection(new_selected_class){
 	selected_page.classList.remove("visible");
 	selected_page.classList.add("hidden");
 
+}
+
+
+//	--------------------- Javascript for Projects Section ----------------------------------
+function addEventHandlersForProjects(){
+	for (const p of document.getElementsByClassName('project')){
+		let bar = p.getElementsByClassName('title_bar')[0];
+		bar.addEventListener('click', function(){ toggleBar(
+			p.getElementsByClassName('description')[0], bar
+			)
+		});
+	}
+}
+
+function toggleBar(d, b){
+	let span = b.getElementsByTagName('span')[0];
+	if(d.style.display == 'flex'){
+		d.style.display = 'none';
+		span.style.borderTop = 'solid aqua 15px';
+		span.style.borderBottom = 0;
+	}
+	else{
+		d.style.display = 'flex';
+		span.style.borderBottom = 'solid aqua 15px';
+		span.style.borderTop = 0;
+	}
 }

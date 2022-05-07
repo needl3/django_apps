@@ -16,23 +16,23 @@ class Video(models.Model):
 class Recents(models.Model):
     name = models.CharField(max_length=300, unique=True, default=uuid.uuid1)
     def __str__(self):
-        return 'Recents Anime Table'
+        return self.name
 
 class NewReleases(models.Model):
     name = models.CharField(max_length=300, unique=True, default=uuid.uuid1)
     last_ep = models.IntegerField(default=0)
     def __str__(self):
-        return 'Trending Anime Table'
+        return self.name
 
 class Recommended(models.Model):
     name = models.CharField(max_length=300, unique=True, default=uuid.uuid1)
     def __str__(self):
-        return 'Recommended Anime Table'
+        return self.name
 class Hot(models.Model):
     name = models.CharField(max_length=300, unique=True, default=uuid.uuid1)
     def __str__(self):
-        return 'Hot Anime Table'
+        return self.name
 class Popular(models.Model):
     name = models.CharField(max_length=300, unique=True, default=uuid.uuid1)
     def __str__(self):
-        return 'Recently Popular Anime Table'
+        return self.name

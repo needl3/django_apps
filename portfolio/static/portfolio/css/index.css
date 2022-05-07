@@ -64,7 +64,7 @@ body{
 	display: none !important;
 	transition: 1s;
 }
-img{
+.bg_image img{
 	position: absolute;
 
 }
