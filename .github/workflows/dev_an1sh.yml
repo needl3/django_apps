@@ -61,3 +61,9 @@ jobs:
           app-name: 'an1sh'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FAC34424B1F14E80B24D393FC7A33696 }}
+      
+      - name: Configure whitenoise
+        run: python manage.py collectstatic
+      
+      - name: Start Server
+        run: python manage.py runserver
