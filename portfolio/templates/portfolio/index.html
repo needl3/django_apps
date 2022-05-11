@@ -4,10 +4,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Anish Chapagai | Portfolio</title>
+	<title>{{ Me.Name }} | Portfolio</title>
 
 	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/index.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/projects.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/participations.css' %}">
 </head>
 <body>
 <!-- 	<embed src="loyalist.mp3" width="0" height="0" loop="true" autostart="true" hidden="true" /> -->
@@ -17,15 +18,15 @@
 			<li class="academics"><a href="#academics">Academics</a></li>
 			<li class="projects"><a href="#projects">Projects</a></li>
 			<li class="participations"><a href="#participations">Participations</a></li>
-			<li class="tools"><a href="#tools">Developer Tools</a></li>
+			<li class="tools"><a href="#sketches">Cheap Sketches</a></li>
 			<li class="contact"><a href="#contact">Contact</a></li>
 		</ul>
 	</nav>
 	<div class="view_container" >
 		<div class="bg_image visible" id="intro">
-			<img class="image1" src="https://i.pinimg.com/originals/9e/e6/3d/9ee63d0ab58dd52b7ae221ed8cefa1bb.jpg">
-			<img class="image2" src="https://i.pinimg.com/originals/fd/c1/5f/fdc15fe6bec5111bb6279aa41369262f.jpg">
-			<img class="image3" src="https://i.pinimg.com/originals/f9/fb/2f/f9fb2f61bfc41cf1b59a7d6c04616ef0.jpg">
+			<img class="image1" src="{{ Me.Image.0 }}">
+			<img class="image2" src="{{ Me.Image.1 }}">
+			<img class="image3" src="{{ Me.Image.2 }}">
 			<div class="gradient_container"></div>
 			<div class="bg_text">
 				<ul>
@@ -71,8 +72,29 @@
 				</ul>
 			</div>
 		</div>
-		<div id="participations" class="hidden"></div>
-		<div id="tools" class="hidden"></div>
+		<div id="participations" class="hidden">
+			<div class='par_container'>
+				<ul class='par_ul'>
+					{% for event in Event %}
+						<li class='par_li'>
+							<h3>{{ event.Name }}</h3>
+							<div class='par_positioning_container'>
+								<p>
+									{{ event.Description }}
+								</p>
+								<a href="{{ event.Image }}" target='_blank'>
+									<div class='par_image'>
+										<div class='par_image_filter'></div>
+										<img src="{{ event.Image }}">
+									</div>
+								</a>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div id="arts" class="hidden"></div>
 		<div id="contact" class="hidden"></div>
 		<button class="move_down" class="hidden">↓</button>
 	</div>

@@ -150,6 +150,8 @@ span.cursor{
 	position: absolute;
 	left: 50%;
 	top: 95%;
+
+	z-index: 99;
 }
 
 /* Section for animations  */
