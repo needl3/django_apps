@@ -136,7 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-CSRF_TRUSTED_ORIGINS = ['https://an1sh.herokuapp.com',
+CSRF_TRUSTED_ORIGINS = ['https://an1sh.herokuapp.com','https://anischapagai.com.np'
 ]
 
 # Mail Configurations
