@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = os.environ['dj_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -136,12 +136,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
+<<<<<<< HEAD
 CSRF_TRUSTED_ORIGINS = ['https://an1sh.herokuapp.com',
                         'https://www.anishchapagai.com.np',
                         'https://anishchapagai.com.np',
                         'https://anischapagai.com.np',
                         'https://www.anischapagai.com.np'
                         'https://an1sh.azurewebsites.net'
+=======
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.anischapagai.com.np',
+    'https://an1sh.azurewebsites.net'
+>>>>>>> dev-csrf-issue
 ]
 # Mail Configurations
 EMAIL_HOST = 'smtp.gmail.com'
