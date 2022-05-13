@@ -8,6 +8,7 @@ Runs after the window loads completely
 window.onload = ()=>{
 	indexEvents();
 	addEventHandlersForProjects();
+	addEventHandlersForContacts();
 }
 
 function indexEvents(){
@@ -142,4 +143,65 @@ function toggleBar(d, b){
 		span.style.borderBottom = 'solid aqua 15px';
 		span.style.borderTop = 0;
 	}
+}
+
+//	--------------------- Javascript for Contacts Section ----------------------------------
+function addEventHandlersForContacts(){
+	let m = document.getElementById('cont_anon_message');
+	let anon_field = document.getElementsByClassName('cont_anonymous')[0];
+	m.addEventListener('click', () =>{
+		anon_field.style.display = 'block';
+	})
+
+	anon_field.getElementsByClassName('cont_anon_exit')[0].addEventListener('click', ()=>{
+		anon_field.style.display = 'none';
+	})
+
+	let b = anon_field.getElementsByTagName('button')[0];
+	let inps = anon_field.getElementsByClassName('cont_anon_left')[0].getElementsByTagName('input')
+	b.addEventListener('click', ()=>{
+		let data = {
+			'name': inps[0].value,
+			'email': inps[1].value,
+			'phone': inps[2].value,
+			'message': anon_field.getElementsByTagName('textarea')[0].value,
+		}
+
+		let b_orig_text = b.innerHTML;
+		let b_orig_bg = b.style.backgroundColor;
+		let b_orig_col = b.style.color;
+
+		b.innerHTML = 'Sending';
+		b.style.backgroundColor = '#009999';
+		b.style.color = 'black';
+
+
+		fetch(b.attributes['data-value'].value, {
+			method:'POST',
+			headers: {'Content-Type': 'application/json',
+					  'X-CSRFToken': anon_field.getElementsByTagName('input')[0].attributes['value'].value,
+			}, 
+			body: JSON.stringify(data),
+		}).then(res => {
+			res.text().then(text => {
+				let resp = JSON.parse(text)['Status'];
+				if( resp === 'Success'){
+					b.innerHTML = resp;
+					b.style.backgroundColor = '#aaffaa';
+					b.style.color = 'black';
+				}else{
+					b.innerHTML = resp;
+					b.style.backgroundColor = '#aa0011';
+					b.style.color = 'black';
+				}
+			})
+		}).then(() => {
+			setTimeout(()=>{
+			b.innerHTML = b_orig_text;
+			b.style.backgroundColor = b_orig_bg;
+			b.style.color = b_orig_col;
+			}, 3000);
+		})
+	})
+
 }

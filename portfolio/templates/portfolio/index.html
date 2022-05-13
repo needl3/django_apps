@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/index.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/projects.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/participations.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/contact.css' %}">
 </head>
 <body>
 <!-- 	<embed src="loyalist.mp3" width="0" height="0" loop="true" autostart="true" hidden="true" /> -->
@@ -18,7 +19,7 @@
 			<li class="academics"><a href="#academics">Academics</a></li>
 			<li class="projects"><a href="#projects">Projects</a></li>
 			<li class="participations"><a href="#participations">Participations</a></li>
-			<li class="tools"><a href="#sketches">Cheap Sketches</a></li>
+			<li class="arts"><a href="#sketches">Cheap Sketches</a></li>
 			<li class="contact"><a href="#contact">Contact</a></li>
 		</ul>
 	</nav>
@@ -95,7 +96,71 @@
 			</div>
 		</div>
 		<div id="arts" class="hidden"></div>
-		<div id="contact" class="hidden"></div>
+		<div id="contact" class="hidden">
+			<div class="cont_container">
+				<h1>I'd love to hear from you</h1>
+				<div class="cont_description_container">
+					<div class="cont_art">
+						<div class="cont_head"></div>
+						<div class="cont_body_container">
+							<div class="cont_body"></div>
+							<div class="cont_left_hand"></div>
+							<div class="cont_right_hand"></div>
+						</div>
+						<div class="cont_plat_container">
+							<div class="cont_platform"></div>
+							<div class="cont_thigh1"></div>
+							<div class="cont_thigh2"></div>
+						</div>
+						<div class=cont_foot_container>
+							<div class="cont_foot1"></div>
+							<div class="cont_foot2"></div>
+						</div>
+					</div>
+					<div class="cont_separator"></div>
+					<div class="cont_description">
+						<p>
+							Got a project you'd like me to work on?<br>
+							Or how about a friendly chat?<br>
+							Or maybe let's go cycling together.<br>
+						</p>
+					</div>
+				</div>
+				<div class="cont_links">
+					<ul>
+						{% for i in Contact %}
+							<li>
+								<a href="{{ i.LinkSocial }}">
+									<img src="{% static 'portfolio/assets/icons/' %}{{ i.IconSocial }}.svg">
+								</a>
+							</li>
+						{% endfor %}
+							<li id="cont_anon_message">
+								<a href="#">
+									<img src="{% static 'portfolio/assets/icons/anonymous.svg' %}">
+								</a>								
+							</li>
+					</ul>
+				</div>
+				<div class="cont_anonymous">
+					<div class='cont_anon_exit'>
+						<div class="cont_anon_exit_left"></div>
+						<div class="cont_anon_exit_right"></div>
+					</div>
+					<h1>Write to me here anonymously</h1>
+					<form method="post" id="form" onsubmit="return false">
+						{% csrf_token %}
+						<div class="cont_anon_left">
+							<input type="text" name="name" placeholder="Nickname*" required>
+							<input type="text" name="email" placeholder="Email">
+							<input type="text" name="phone" placeholder="Phone Number">
+						</div>
+						<textarea maxlength="1000" name="message" placeholder="Message"></textarea>
+					</form>
+					<button data-value="{% url 'portfolio:form' %}" form="form">Glide it away</button>
+				</div>
+			</div>
+		</div>
 		<button class="move_down" class="hidden">↓</button>
 	</div>
 </body>
