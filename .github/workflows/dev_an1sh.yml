@@ -7,7 +7,7 @@ name: Build and deploy Python app to Azure Web App - an1sh
 on:
   push:
     branches:
-      - dev
+      - dev-csrf-issue
   workflow_dispatch:
 
 jobs:
