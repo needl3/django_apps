@@ -3,7 +3,10 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
 import json
+import logging
 from . import models
+
+logging.basicConfig(filename='contact_debug.log', encoding='utf-8', level=logging.DEBUG)
 
 # Create your views here.
 def index(request):
@@ -53,12 +56,12 @@ def form(request):
                 f'Name: {name}\n\
                 Email: {email}\n\
                 Phone: {phone}\n\
-                Message: {message}\n\
-                ',
+                Message: {essage}\n',
                 settings.EMAIL_HOST_USER,
                 ['anishchapagai0@gmail.com'],
                 fail_silently=False)
             return JsonResponse({'Status':'Success'})
         except Exception as e:
+            logging.debug("SMTP send_mail"+str(e))
             return JsonResponse({'Status':'Failed'})
     return JsonResponse({'Status':'You nauty nauty ;)'})
