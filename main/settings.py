@@ -27,10 +27,10 @@ SECRET_KEY = os.environ['dj_key']
 # DEBUG = True
 
 ALLOWED_HOSTS = [
-                'https://an1sh.herokuapp.com',
-                'https://anishchapagai.com.np',
-                'https://anischapagai.com.np',
-                'https://an1sh.azurewebsites.net'
+                'an1sh.herokuapp.com',
+                'anishchapagai.com.np',
+                'anischapagai.com.np',
+                'an1sh.azurewebsites.net'
             ]
 
 
