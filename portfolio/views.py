@@ -56,7 +56,7 @@ def form(request):
                 f'Name: {name}\n\
                 Email: {email}\n\
                 Phone: {phone}\n\
-                Message: {essage}\n',
+                Message: {message}\n',
                 settings.EMAIL_HOST_USER,
                 ['anishchapagai0@gmail.com'],
                 fail_silently=False)

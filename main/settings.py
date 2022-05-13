@@ -137,11 +137,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CSRF_TRUSTED_ORIGINS = ['https://an1sh.herokuapp.com',
+                        'https://www.anishchapagai.com.np',
                         'https://anishchapagai.com.np',
                         'https://anischapagai.com.np',
+                        'https://www.anischapagai.com.np'
                         'https://an1sh.azurewebsites.net'
 ]
-
 # Mail Configurations
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
