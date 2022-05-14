@@ -16,11 +16,10 @@
         </h2>
     
         <div class="flex-nav-middle">
-            <a href="#"><li class="top">Top Rated</li></a>
-            <a href="#"><li class="hot"> Hot</li></a>
-            <a href="#"><li class="most-watched">Most Watched</li></a>
-            <a href="#"><li class="genres">Genres</li></a>
-            <a href="#"><li class="ongoing">Ongoing</li></a>
+            <a href="{% url 'aniwatch:hot' %}"><li class="hot"> Hot</li></a>
+            <a href="{% url 'aniwatch:recently-popular' %}"><li class="recently-popular">Recently Popular</li></a>
+            <a href="{% url 'aniwatch:genres' %}"><li class="genres">Genres</li></a>
+            <a href="{% url 'aniwatch:ongoing' %}"><li class="ongoing">Ongoing</li></a>
         </div>
         <div class="flex-nav-right">
             <li class="inp" style="display: none">

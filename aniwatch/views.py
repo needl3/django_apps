@@ -6,24 +6,25 @@ from bs4 import BeautifulSoup
 
 import io, csv, json, requests, os
 from . import models
+from .templatetags import scraper
 
 def index(request):
     # Store dict containing trending and recommended
     if request.method == 'POST':
         return render(request, 'aniwatch/error.html', {'method':'Please don\'t POST'})
     context = {
-        'Recents':[{'Title':models.Video.objects.get(name=i.name).name,
-                        'Url':models.Video.objects.get(name=i.name).name,
+        'Recents':[{'Title':i.name,
+                    'Url':models.Video.objects.get(name=i.name).url,
+                    'Image':models.Video.objects.get(name=i.name).image_link
+                    } for i in models.Recents.objects.all()[:10]],
+        'New':[{'Title':i.name,
+                        'Url':models.Video.objects.get(name=i.name).url,
                         'Image':models.Video.objects.get(name=i.name).image_link
-                        } for i in models.Recents.objects.all()],
-        'Trending':[{'Title':models.Video.objects.get(name=i.name).name,
-                        'Url':models.Video.objects.get(name=i.name).name,
+                        } for i in models.NewReleases.objects.all()[:10]],
+        'Recommended':[{'Title':i.name,
+                        'Url':models.Video.objects.get(name=i.name).url,
                         'Image':models.Video.objects.get(name=i.name).image_link
-                        } for i in models.Trending.objects.all()],
-        'Recommended':[{'Title':models.Video.objects.get(name=i.name).name,
-                        'Url':models.Video.objects.get(name=i.name).name,
-                        'Image':models.Video.objects.get(name=i.name).image_link
-                        } for i in models.Recommended.objects.all()],
+                        } for i in models.Recommended.objects.all()[:10]],
         }
     return render(request, 'aniwatch/index.html', context)
 
@@ -34,7 +35,7 @@ def query(request):
     # pull video information from Video model
     anime = {'Query':str(request.POST['anime_name']),
             'Anime':[{'Title':i.name,
-                        'Url':i.name,
+                        'Url':i.url,
                         'Image':i.image_link
                         }for i in models.Video.objects.filter(name__startswith=str(request.POST['anime_name']))[:20]
                     ]
@@ -43,37 +44,26 @@ def query(request):
 
 
 @xframe_options_exempt
-def anime(request, anime_name, episode=False):
+def anime(request, anime_url, episode=False):
     # Return a page with video
-    obj = models.Video.objects.get(name=anime_name)
+
+    obj = models.Video.objects.get(url=anime_url)
     context = {'Anime':obj,
-                'Servers': getServers(obj.url.split('/category/')[1], "1" if not episode else episode),
+                # This conditional episode below will handle if the page is first clicked
+                # or page with video has to be served
+                'Servers': scraper.ScrapeAnime.getServers(obj.url, "1" if not episode else episode),
                 'iframe':episode
     }
     return render(request, 'aniwatch/anime.html', context)
 
-def animePlayer(request, anime_name, episode):
-    return anime(request, anime_name, episode)
-
-def queryEpisodesJson(request, anime_name, episode):
+def queryEpisodesJson(request, anime_url, episode):
     # Fetch streaming url of that episode
-    url = f"https://gogoanime.sk/{anime_name}-episode-{episode}"
+    url = f"https://gogoanime.sk/{anime_url}-episode-{episode}"
     soup = BeautifulSoup(
             requests.get(url).text, 'html.parser')
     url = soup.find('div',class_="play-video").iframe.get("src")
     return JsonResponse(json.dumps({"Url":url}), safe=False);
 
-def getServers(anime_name, episode="1"):
-    url = f'https://gogoanime.sk/{anime_name}-episode-{episode}'
-    r = requests.get(url).text
-    soup = BeautifulSoup(r, 'html.parser')
-    li_servers = soup.find('div', class_='anime_muti_link').find_all('li')
-    li_names = [i.a.text.strip().split('Choose')[0] for i in li_servers]
-    a_href = [i.a['data-video'].strip('//') for i in li_servers]
-    final = list()
-    for j in range(len(li_names)):
-        final.append({'Name':li_names[j], 'Url':a_href[j]})
-    return final
 
 class MovieUpload(View):
     def get(self, request):
@@ -101,36 +91,41 @@ class MovieUpload(View):
             ]
         try:
             bulk_obj = models.Video.objects.bulk_create(obj)
-            return render(request, 'aniwatch/error.html', {'method':'Data Imported Successfylly'})
+            return render(request, 'aniwatch/error.html', {'method':'Data Imported Successfully'})
         except Exception as e:
             return render(request, 'aniwatch/error.html', {'method':f'Failed to import Data:    {e}'})
 
-class RecentsUpload(View):
-    def get(self, request):
-        return render(request, 'aniwatch/upload_trending_csv.html')
-
-    def post(self, request):
-        if str(request.POST['key']) != os.environ['dj_key']:
-            return HttpResponse("<h1>User not authorized to update database</h1>")
-
-        file = io.TextIOWrapper(request.FILES['data'].file)
-        database = csv.DictReader(file)
-        database = list(database)
-        #'Name', 'Image', 'Summary', 'Genre', 'Episodes', 'Status']
-        obj = [
-            models.Video(
-                name = row['Name'],
-                image_link = row['Image'],
-                summary = row['Summary'],
-                genre = row['Genre'],
-                status = row['Status'],
-                episodes = row['Episodes'],
-                url = row['Url']
-                )
-            for row in database
+def popular(request):
+    scraper.DatabaseManagement().updatePopular(models)
+    anime = {
+        'Query':'Recently Popular',
+        'Anime':[{'Title':i.name,
+                'Url':models.Video.objects.get(name=i.name).url,
+                'Image':models.Video.objects.get(name=i.name).image_link
+                }for i in models.Popular.objects.all()[:20]
             ]
-        try:
-            bulk_obj = models.Video.objects.bulk_create(obj)
-            return render(request, 'aniwatch/error.html', 'Data imported Successfully.')
-        except Exception as e:
-            return render(request, 'aniwatch/error.html', 'Failed to import bulk data\nError: {e}')
+    }
+    return render(request, 'aniwatch/query.html', anime)
+
+def hot(request):
+    anime = {
+        'Query':'Hot',
+        'Anime':[{'Title':i.name,
+                'Url':models.Video.objects.get(name=i.name).url,
+                'Image':models.Video.objects.get(name=i.name).image_link
+                }for i in models.Hot.objects.all()[:20]
+            ]
+    }
+    return render(request, 'aniwatch/query.html', anime)
+
+def genres(request):
+    return render(request, 'aniwatch/error.html', {'method':'Need some time to implement this'})
+def ongoing(request):
+    anime = {'Query':'Genre: Ongoing',
+            'Anime':[{'Title':i.name,
+                        'Url':i.url,
+                        'Image':i.image_link
+                        }for i in models.Video.objects.filter(status='Ongoing')[:20]
+                    ]
+            }
+    return render(request, 'aniwatch/query.html', anime)

@@ -1,0 +1,79 @@
+.projects_container li{
+	margin: 0.5em;
+}
+.title_bar{
+	background-color: rgb(60, 60, 60, 60);
+
+	display: flex;
+	justify-content: space-between;
+
+	padding: .5em 1em;
+	align-items: center;
+
+	cursor: pointer;
+	border-radius: 1em;
+}
+.title_bar span{
+	border-left: solid transparent 10px;
+	border-right: solid transparent 10px;
+	border-top: solid aqua 15px;
+}
+.title{
+	padding: 0.3em;
+	font-size: 2em;
+}
+.tools_container{
+	background-color: inherit;
+	display: flex;
+}
+.tools img{
+	max-width: 2em;
+}
+.description{
+	display: none;
+
+	align-items: center;
+	text-align: center;
+
+	background-color: rgb(40, 40, 40);
+
+	border-radius: 1em;
+}
+.description .text{
+	max-width: 50%;
+	word-spacing: 5px;
+	font-size: 1em;
+	padding: 1em;
+}
+.description .photo{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1em;
+}
+.photo a{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.description img{
+	max-width: 70%;
+	border-radius: 1em;
+	z-index: 3;
+}
+.description img:hover {
+	filter: blur(5px);
+	transition: .1s;
+	z-index: 1;
+	cursor: pointer;
+}
+.github_popup{
+	padding: 1em;
+	position: absolute;
+	display: flex;
+	z-index: 2;
+}
+.github_popup img{
+	max-width: 10%;
+}

@@ -64,7 +64,7 @@ body{
 	display: none !important;
 	transition: 1s;
 }
-img{
+.bg_image img{
 	position: absolute;
 
 }
@@ -136,7 +136,7 @@ img{
 span.cursor{
 	animation: blink 1s step-start 0s infinite;
 }
-.view_container button{
+.move_down{
 	margin-top:  auto;
 	border: 0;
 	border-radius: 0 0 1em 1em;
@@ -149,7 +149,8 @@ span.cursor{
 	animation-delay: 10s;
 	position: absolute;
 	left: 50%;
-	top: 95%;
+	bottom: 0;
+	z-index: 99;
 }
 
 /* Section for animations  */
@@ -158,8 +159,7 @@ span.cursor{
 }
 @keyframes beat{
 	50%{
-		transform: scale(1.1);
 		background-color: #04AAFF;
-		top: 93%;
+		bottom: 1%;
 	}
 }
