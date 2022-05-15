@@ -138,7 +138,9 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.anischapagai.com.np',
+    'https://*.anishchapagai.com.np',
     'https://an1sh.azurewebsites.net'
+    'https://an1sh.herokuapp.com'
 ]
 # Mail Configurations
 EMAIL_HOST = 'smtp.gmail.com'
