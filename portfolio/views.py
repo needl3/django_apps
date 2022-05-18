@@ -10,10 +10,11 @@ logging.basicConfig(filename='contact_debug.log', encoding='utf-8', level=loggin
 
 # Create your views here.
 def index(request):
+    Me = models.Me.objects.all()[0]
     context = {
         'Me':{
-            'Name':models.Me.objects.all()[0].name,
-            'Image':models.Me.objects.all()[0].image_link.split(',')
+            'Name':Me.name,
+            'Image':Me.image_link.split(','),
             },
         'Projects':[{
             'Name':i.name,

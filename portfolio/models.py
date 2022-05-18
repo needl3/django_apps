@@ -9,6 +9,7 @@ class Me(models.Model):
     # Can't make it list here because default python list type is not supported
     # So will make list in views by splitting
     image_link = models.TextField(default="")
+    music = models.FileField(upload_to='portfolio/static/portfolio/assets/', default="")
 
     def __str__(self):
         return self.name

@@ -23,6 +23,21 @@ function indexEvents(){
 	move_down_button.addEventListener("click", ()=>{
 		updateSelection(getNextSelection());
 	})
+
+	music = document.getElementsByClassName('music')[0];
+	music.addEventListener('click', ()=>{
+		let player_stat = music.classList[1]
+		music.classList.remove(player_stat);
+
+		if(player_stat == "playing"){
+			music.classList.add("paused");
+			music.getElementsByTagName('audio')[0].pause();
+		}else{
+			music.classList.add("playing");
+			music.getElementsByTagName('audio')[0].play();
+		}		
+	})
+
 	greet();
 }
 
