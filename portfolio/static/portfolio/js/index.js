@@ -159,13 +159,15 @@ function addEventHandlersForContacts(){
 
 	let b = anon_field.getElementsByTagName('button')[0];
 	let inps = anon_field.getElementsByClassName('cont_anon_left')[0].getElementsByTagName('input')
-	b.addEventListener('click', ()=>{
+	b.addEventListener('click', function handler(){
 		let data = {
 			'name': inps[0].value,
 			'email': inps[1].value,
 			'phone': inps[2].value,
 			'message': anon_field.getElementsByTagName('textarea')[0].value,
 		}
+
+		if(data['name'] == "" || data['message'] == "")	return;
 
 		let b_orig_text = b.innerHTML;
 		let b_orig_bg = b.style.backgroundColor;
@@ -184,23 +186,19 @@ function addEventHandlersForContacts(){
 			body: JSON.stringify(data),
 		}).then(res => {
 			res.text().then(text => {
-				let resp = JSON.parse(text)['Status'];
-				if( resp === 'Success'){
+				b.style.color = 'black';
+				try{
+					let resp = JSON.parse(text)['Status'];
 					b.innerHTML = resp;
-					b.style.backgroundColor = '#aaffaa';
-					b.style.color = 'black';
-				}else{
-					b.innerHTML = resp;
+					if( resp === 'Success')	b.style.backgroundColor = '#aaffaa';
+					else 					b.style.backgroundColor = '#aa0011';
+				}catch(e){
+					b.innerHTML = "Connection Error";
 					b.style.backgroundColor = '#aa0011';
-					b.style.color = 'black';
 				}
 			})
 		}).then(() => {
-			setTimeout(()=>{
-			b.innerHTML = b_orig_text;
-			b.style.backgroundColor = b_orig_bg;
-			b.style.color = b_orig_col;
-			}, 3000);
+			b.removeEventListener('click', handler);
 		})
 	})
 

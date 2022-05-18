@@ -45,18 +45,14 @@ def form(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         try:
-            name = str(data['name'])
-            email = str(data['email'])
-            phone = str(data['phone'])
-            message = str(data['message'])
-
             # Send mail
             send_mail(
                 'Portfolio Message',
-                f'Name: {name}\n\
-                Email: {email}\n\
-                Phone: {phone}\n\
-                Message: {message}\n',
+                f'Name: {str(data["name"])}\n\
+                Email: {str(data["email"])}\n\
+                Phone: {str(data["phone"])}\n\
+                Message: {str(data["message"])}\n\
+                UserAgent: {str(request.headers["User-Agent"])}',
                 settings.EMAIL_HOST_USER,
                 ['anishchapagai0@gmail.com'],
                 fail_silently=False)
