@@ -10,10 +10,13 @@ class OverwriteStorage(FileSystemStorage):
 # Create your models here.
 class Me(models.Model):
     def get_available_name(self, name, max_length=None):
-        name = 'portfolio/static/portfolio/assets/music'
-        if os.path.exists(name):
-            os.remove(name)
-        return name
+        name = 'staticfiles/portfolio/assets/music/'
+        try:
+            music_file = os.listdir(name)[0]
+            os.remove(name+music_file)
+            return name+music_file
+        except:
+            return name+"musicNone"
 
     name=models.CharField(max_length=100, default='Anish Chapagai')
 

@@ -15,7 +15,6 @@ def index(request):
         'Me':{
             'Name':Me.name,
             'Image':Me.image_link.split(','),
-            'Music':Me.music.url,
             },
         'Projects':[{
             'Name':i.name,
