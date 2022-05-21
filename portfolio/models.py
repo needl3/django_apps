@@ -44,3 +44,10 @@ class Events(models.Model):
     image_link = models.CharField(max_length=300, default="")
     def __str__(self):
         return self.name
+
+class Contacts(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.name

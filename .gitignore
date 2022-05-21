@@ -3,3 +3,4 @@ __pycache__
 *.csv
 start.sh
 staticfiles
+*.sqlite3

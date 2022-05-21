@@ -28,16 +28,8 @@ def index(request):
             'Description':i.description,
             'Image':i.image_link
             } for i in models.Events.objects.all()],
-        'Contact':[{'LinkSocial':'https://facebook.com/h3mlo',
-                    'IconSocial':'facebook'},
-                    {'LinkSocial':'https://instagram.com/anis_chapagai',
-                    'IconSocial':'instagram'},
-                    {'LinkSocial':'https://www.linkedin.com/in/an1sh/',
-                    'IconSocial':'linkedin'},
-                    {'LinkSocial':'https://snapchat.com/add/segfaulk',
-                    'IconSocial':'snapchat'},
-                    {'LinkSocial':'https://www.t.me/n33d13',
-                    'IconSocial':'telegram'}],
+        'Contact':[{'IconSocial':i.name,
+                    'LinkSocial':i.url} for i in models.Contacts.objects.all()],
         'iconGithub':'https://github.com/fluidicon.png',   
     }
     return render(request, 'portfolio/index.html', context)
@@ -55,7 +47,7 @@ def form(request):
                 Message: {str(data["message"])}\n\
                 UserAgent: {str(request.headers["User-Agent"])}',
                 settings.EMAIL_HOST_USER,
-                ['anishchapagai0@gmail.com'],
+                [settings.EMAIL_DEST_USER],
                 fail_silently=False)
             return JsonResponse({'Status':'Success'})
         except Exception as e:
