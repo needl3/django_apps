@@ -8,11 +8,14 @@ class Me(models.Model):
     def get_available_name(self, name, max_length=None):
         name = 'staticfiles/portfolio/assets/music/'
         try:
-            music_file = os.listdir(name)[0]
-            os.remove(name+music_file)
-            return name+music_file
+            music_file = None
+            for i in os.listdir(name):
+                if len(i) > 5:
+                    music_file = i
+                os.remove(name+i)
+            return name+i
         except:
-            return name+"musicNone"
+            return name+"music.none"
 
     name=models.CharField(max_length=100, default='Anish Chapagai')
 
