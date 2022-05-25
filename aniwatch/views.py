@@ -121,11 +121,15 @@ def hot(request):
 def genres(request):
     return render(request, 'aniwatch/error.html', {'method':'Need some time to implement this'})
 def ongoing(request):
+    filtered_ongoing_anime = list()
+    for i in models.Video.objects.filter(status='Ongoing'):
+        if not 'dub' in i.name.lower():
+            filtered_ongoing_anime.append(i)
     anime = {'Query':'Genre: Ongoing',
             'Anime':[{'Title':i.name,
                         'Url':i.url,
                         'Image':i.image_link
-                        }for i in models.Video.objects.filter(status='Ongoing')[:20]
+                        } for i in filtered_ongoing_anime[:20]
                     ]
             }
     return render(request, 'aniwatch/query.html', anime)
