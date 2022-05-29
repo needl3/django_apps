@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'anishchapagai'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B5235ABFB08E418C8A4CAA737B2A090E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_544AB930A26B4EDEBA2B2AF4105EEC53 }}
