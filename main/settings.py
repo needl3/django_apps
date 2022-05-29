@@ -20,11 +20,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# os.environ['dj_key'] = 'sekret'
-SECRET_KEY = os.environ['dj_key']
+SECRET_KEY = os.environ.get('dj_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -85,7 +84,14 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    os.environ.get('MYSQL'): {
+        'ENGINE': 'mssql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_ADMIN'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': os.environ.get('DB_HOST'),
+    },
+    os.environ.get('SQLITE'): {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
@@ -136,14 +142,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.anischapagai.com.np',
-    'https://an1sh.azurewebsites.net'
-]
+CSRF_TRUSTED_ORIGINS = os.environ.get('ORIGINS').split(',')
+
 # Mail Configurations
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_DEST_USER = os.environ['EMAIL_DEST_USER']
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_DEST_USER = os.environ.get('EMAIL_DEST_USER')
