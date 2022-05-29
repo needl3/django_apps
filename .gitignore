@@ -4,3 +4,6 @@ __pycache__
 start.sh
 staticfiles
 *.sqlite3
+*.pem
+*.json
+todo

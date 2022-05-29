@@ -2,14 +2,15 @@ from django.db import models
 import uuid
 
 class Video(models.Model):
-    name = models.CharField(max_length=30, unique=True, default=uuid.uuid1)
+    name = models.CharField(max_length=200, unique=True, default=uuid.uuid1)
     image_link = models.CharField(max_length=200, default="#")
     url = models.CharField(max_length=200, default="#")
     summary = models.TextField(default="")
-    genre = models.CharField(max_length=20, default="")
-    status = models.CharField(max_length=20, default="")
+    genre = models.CharField(max_length=200, default="")
+    status = models.CharField(max_length=100, default="")
     episodes = models.IntegerField(default=1)
     released = models.IntegerField(default=1)
+    anime_type = models.CharField(max_length=100, default="")
     def __str__(self):
         return self.name
 

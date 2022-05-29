@@ -89,7 +89,6 @@ class ScrapeAnime:
 		# For writing title:url in csv
 		fieldnames = ['Name', 'Image', 'Summary', 'Genre', 'Type', 'Episodes', 'Status', 'Released', 'Url']
 		writer = csv.DictWriter(file, fieldnames=fieldnames)
-		writer.writeheader()
 
 		for anime in anime_list:
 			# Find basic info i.e URL to anime
@@ -99,7 +98,7 @@ class ScrapeAnime:
 
 			db_val = self.scrapeAnimeDetails(self.base+url)
 			db_val['Name'] = title
-			db_val['Url'] = url
+			db_val['Url'] = url.split('/category/')[1]
 			writer.writerow(db_val)
 
 			self.log_scrape_stat.info(f'{c},{page_number},{db_val["Name"]}')
