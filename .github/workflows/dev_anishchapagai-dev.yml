@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      -name: Configure cron
+      - name: Configure cron
         run: apt-get install cron
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
