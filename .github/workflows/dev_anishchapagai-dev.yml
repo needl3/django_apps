@@ -65,7 +65,7 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2E50BD412F0C46B281F4A19B42E39B17 }}
 
-      -name: Start cron
+      - name: Start cron
         run: |
-        python manage.py crontab add
-        service cron restart
+          python manage.py crontab add
+          service cron restart
