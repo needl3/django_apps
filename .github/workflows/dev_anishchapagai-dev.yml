@@ -29,6 +29,9 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      -name: Configure cron
+        run: apt-get install cron
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
@@ -61,3 +64,8 @@ jobs:
           app-name: 'anishchapagai-dev'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2E50BD412F0C46B281F4A19B42E39B17 }}
+
+      -name: Start cron
+        run: |
+        python manage.py crontab add
+        service cron restart
