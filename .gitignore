@@ -1,7 +1,7 @@
 __pycache__
 *.log
 *.csv
-start.sh
+start_new.sh
 staticfiles
 *.sqlite3
 *.pem

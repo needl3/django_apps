@@ -325,6 +325,7 @@ class DatabaseManagement:
 							status=l_details['Status'],
 							released=l_details['Released'],
 					).save()
+					models.Hot(name=i['Name']).save()
 
 			# Remove expired "Anime in Hot Model"
 			details_all += [list(i.values())[0] for i in details]
