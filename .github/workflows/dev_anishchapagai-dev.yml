@@ -68,4 +68,7 @@ jobs:
       - name: Start cron
         run: |
           python manage.py crontab add
+          pwd
+          whoami
+          ls -R
           sudo service cron restart
