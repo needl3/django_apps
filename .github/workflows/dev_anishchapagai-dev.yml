@@ -67,8 +67,6 @@ jobs:
 
       - name: Start cron
         run: |
+          source antenv/bin/activate
           python manage.py crontab add
-          pwd
-          whoami
-          ls -R
           sudo service cron restart
