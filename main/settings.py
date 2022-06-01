@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'aniwatch',
     'whitenoise.runserver_nostatic',
     'portfolio',
-    'django_crontab',
+    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +153,11 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_DEST_USER = os.environ.get('EMAIL_DEST_USER')
 
-CRONJOBS = [
-    ('*/1 * * * *', 'aniwatch.database_update.updateHot')
+CRON_CLASSES = [
+    "aniwatch.databaseUpdateCron.updateHot",
+    "aniwatch.databaseUpdateCron.updateNewReleases",
+    "aniwatch.databaseUpdateCron.updatePopular",
+    "aniwatch.databaseUpdateCron.updateOngoing",
 ]
+    
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

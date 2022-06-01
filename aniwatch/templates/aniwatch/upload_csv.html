@@ -10,13 +10,9 @@
         <h4>Import CSV</h4>
         <p>Make sure the csv contains headings as</p>
         <ul>
-            <li>Name</li>
-            <li>Image</li>
-            <li>Summary</li>
-            <li>Genre</li>
-            <li>Episodes</li>
-            <li>Status</li>
-            <li>Url</li>
+            {% for columns in headings %}
+                <li>{{ columns }}</li>
+            {% endfor %}
         </ul>
         <form method="post" enctype="multipart/form-data">
              {% csrf_token %}

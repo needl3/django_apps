@@ -1,18 +1,13 @@
 #!/bin/sh
 
-# Copy all necessary steps defined from deployment
-cat /opt/startup/startup.sh | head -n -1 > startup.sh
+#
+#	Copy this file to /home in azure container
+#	Point this file as custom script to be executed
+#
+
+
+/opt/startup/startup.sh&
+disown
 
 # Add your custom command here
-echo '
-apt-get update -y
-apt-get install cron -y
-python manage.py crontab add
-service cron start' >> startup.sh
-
-# Add last line that'll startup the server
-cat /opt/startup/startup.sh | tail -n 1 >> startup.sh
-
-chmod +x startup.sh
-
-./startup.sh
+echo "0 0 * * * source $VIRTUALENVIRONMENT_PATH/bin/activate && python $APP_PATH/manage.py runcrons > /home/cron_task.log" | crontab

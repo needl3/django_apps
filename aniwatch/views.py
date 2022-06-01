@@ -67,7 +67,10 @@ def queryEpisodesJson(request, anime_url, episode):
 
 class MovieUpload(View):
     def get(self, request):
-        return render(request, 'aniwatch/upload_csv.html')
+        context = {
+            'headings':['Name', 'Image', 'Summary', 'Genre', 'Episodes', 'Url', 'Type', 'Released']
+        }
+        return render(request, 'aniwatch/upload_csv.html', context)
 
     def post(self, request):
         if str(request.POST['key']) != os.environ['dj_key']:
@@ -150,3 +153,11 @@ def ongoing(request):
                     ]
             }
     return render(request, 'aniwatch/query.html', anime)
+
+class UpdateConsole(View):
+    def get(self, request):
+        context = dict()
+        return render(request, 'aniwatch/updater_console.html', context)
+
+    def post(self, request):
+        return HttpResponse('hemlo')
