@@ -329,13 +329,14 @@ class DatabaseManagement:
 
 			# Remove expired "Anime in Hot Model"
 			details_all += [list(i.values())[0] for i in details]
-			for anime in models.Hot.objects.all():
-				if anime.name not in details_all:
-					print("Deleting "+anime.name+" from Hot")
-					try:
-						models.Hot.objects.get(name=anime.name).delete()
-					except:
-						print(anime.name + " doesn't exist in the Hot Table")
+
+		for anime in models.Hot.objects.all():
+			if anime.name not in details_all:
+				print("Deleting "+anime.name+" from Hot")
+				try:
+					models.Hot.objects.get(name=anime.name).delete()
+				except:
+					print(anime.name + " doesn't exist in the Hot Table")
 	def updateNewReleases(self, models):
 		'''
 			Updates NewReleases Section i.e recent;y released new episodes
