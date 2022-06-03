@@ -163,3 +163,30 @@ span.cursor{
 		bottom: 1%;
 	}
 }
+.music{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+
+	margin: 1em;
+}
+.music:hover{
+	cursor: pointer;
+}
+
+.paused{
+	border-bottom: solid transparent 1em;
+	border-top: solid transparent 1em;
+	border-left: solid red 1em;
+
+	transition: 0.2s;
+}
+
+.playing{
+	border-left: solid #93e32b 0.3em;
+	border-right: solid #93e32b 0.3em;
+	width: 0.2em;
+	height: 1.7em;
+
+	transition: 0.2s;
+}

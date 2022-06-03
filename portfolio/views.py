@@ -10,10 +10,11 @@ logging.basicConfig(filename='contact_debug.log', encoding='utf-8', level=loggin
 
 # Create your views here.
 def index(request):
+    Me = models.Me.objects.all()[0]
     context = {
         'Me':{
-            'Name':models.Me.objects.all()[0].name,
-            'Image':models.Me.objects.all()[0].image_link.split(',')
+            'Name':Me.name,
+            'Image':Me.image_link.split(','),
             },
         'Projects':[{
             'Name':i.name,
@@ -27,16 +28,8 @@ def index(request):
             'Description':i.description,
             'Image':i.image_link
             } for i in models.Events.objects.all()],
-        'Contact':[{'LinkSocial':'https://facebook.com/h3mlo',
-                    'IconSocial':'facebook'},
-                    {'LinkSocial':'https://instagram.com/anis_chapagai',
-                    'IconSocial':'instagram'},
-                    {'LinkSocial':'https://www.linkedin.com/in/an1sh/',
-                    'IconSocial':'linkedin'},
-                    {'LinkSocial':'https://snapchat.com/add/segfaulk',
-                    'IconSocial':'snapchat'},
-                    {'LinkSocial':'https://www.t.me/n33d13',
-                    'IconSocial':'telegram'}],
+        'Contact':[{'IconSocial':i.name,
+                    'LinkSocial':i.url} for i in models.Contacts.objects.all()],
         'iconGithub':'https://github.com/fluidicon.png',   
     }
     return render(request, 'portfolio/index.html', context)
@@ -45,20 +38,16 @@ def form(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         try:
-            name = str(data['name'])
-            email = str(data['email'])
-            phone = str(data['phone'])
-            message = str(data['message'])
-
             # Send mail
             send_mail(
                 'Portfolio Message',
-                f'Name: {name}\n\
-                Email: {email}\n\
-                Phone: {phone}\n\
-                Message: {message}\n',
+                f'Name: {str(data["name"])}\n\
+                Email: {str(data["email"])}\n\
+                Phone: {str(data["phone"])}\n\
+                Message: {str(data["message"])}\n\
+                UserAgent: {str(request.headers["User-Agent"])}',
                 settings.EMAIL_HOST_USER,
-                ['anishchapagai0@gmail.com'],
+                [settings.EMAIL_DEST_USER],
                 fail_silently=False)
             return JsonResponse({'Status':'Success'})
         except Exception as e:

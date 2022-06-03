@@ -67,7 +67,10 @@ def queryEpisodesJson(request, anime_url, episode):
 
 class MovieUpload(View):
     def get(self, request):
-        return render(request, 'aniwatch/upload_csv.html')
+        context = {
+            'headings':['Name', 'Image', 'Summary', 'Genre', 'Episodes', 'Url', 'Type', 'Released']
+        }
+        return render(request, 'aniwatch/upload_csv.html', context)
 
     def post(self, request):
         if str(request.POST['key']) != os.environ['dj_key']:
@@ -76,7 +79,7 @@ class MovieUpload(View):
         file = io.TextIOWrapper(request.FILES['data'].file)
         database = csv.DictReader(file)
         database = list(database)
-        #'Name', 'Image', 'Summary', 'Genre', 'Episodes', 'Status', 'Url']
+        #'Name', 'Image', 'Summary', 'Genre', 'Type', 'Episodes', 'Status', 'Url']
         obj = [
             models.Video(
                 name = row['Name'],
@@ -85,7 +88,9 @@ class MovieUpload(View):
                 genre = row['Genre'],
                 status = row['Status'],
                 episodes = row['Episodes'],
-                url = row['Url']
+                url = row['Url'],
+                anime_type = row['Type'],
+                released = row['Released'],
                 )
             for row in database
             ]
@@ -96,24 +101,36 @@ class MovieUpload(View):
             return render(request, 'aniwatch/error.html', {'method':f'Failed to import Data:    {e}'})
 
 def popular(request):
-    scraper.DatabaseManagement().updatePopular(models)
+    # Filter dubbed anime
+    filtered_ongoing_anime = list()
+    for i in models.Popular.objects.all():
+        if not 'dub' in i.name.lower():
+            filtered_ongoing_anime.append(i)
+
     anime = {
         'Query':'Recently Popular',
         'Anime':[{'Title':i.name,
                 'Url':models.Video.objects.get(name=i.name).url,
                 'Image':models.Video.objects.get(name=i.name).image_link
-                }for i in models.Popular.objects.all()[:20]
+                }for i in filtered_ongoing_anime[:20]
             ]
     }
     return render(request, 'aniwatch/query.html', anime)
 
 def hot(request):
+
+    # Filter dubbed anime
+    filtered_ongoing_anime = list()
+    for i in models.Hot.objects.all():
+        if not 'dub' in i.name.lower():
+            filtered_ongoing_anime.append(i)
+
     anime = {
         'Query':'Hot',
         'Anime':[{'Title':i.name,
                 'Url':models.Video.objects.get(name=i.name).url,
                 'Image':models.Video.objects.get(name=i.name).image_link
-                }for i in models.Hot.objects.all()[:20]
+                }for i in filtered_ongoing_anime[:20]
             ]
     }
     return render(request, 'aniwatch/query.html', anime)
@@ -121,11 +138,26 @@ def hot(request):
 def genres(request):
     return render(request, 'aniwatch/error.html', {'method':'Need some time to implement this'})
 def ongoing(request):
+
+    # Filter dubbed anime
+    filtered_ongoing_anime = list()
+    for i in models.Video.objects.filter(status='Ongoing'):
+        if not 'dub' in i.name.lower():
+            filtered_ongoing_anime.append(i)
+
     anime = {'Query':'Genre: Ongoing',
             'Anime':[{'Title':i.name,
                         'Url':i.url,
                         'Image':i.image_link
-                        }for i in models.Video.objects.filter(status='Ongoing')[:20]
+                        } for i in filtered_ongoing_anime[:20]
                     ]
             }
     return render(request, 'aniwatch/query.html', anime)
+
+class UpdateConsole(View):
+    def get(self, request):
+        context = dict()
+        return render(request, 'aniwatch/updater_console.html', context)
+
+    def post(self, request):
+        return HttpResponse('hemlo')

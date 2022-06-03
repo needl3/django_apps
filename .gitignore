@@ -1,6 +1,14 @@
 __pycache__
 *.log
 *.csv
+start_new.sh
+staticfiles
+*.sqlite3
+*.pem
+*.json
+todo
+*.env
+*.sqlite
 *.env
 start.sh
 todo

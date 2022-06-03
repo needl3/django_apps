@@ -261,6 +261,7 @@
 }
 .cont_anonymous h1{
 	margin-bottom: 2em;
+	font-size: 1.3em;
 }
 .cont_anonymous form{
 	display: flex;

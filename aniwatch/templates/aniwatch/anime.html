@@ -19,7 +19,7 @@
                 <li class='title'><i><span>Name:   </span></i>{{ Anime.name }}</li>
                 <li class='genre'><i><span>Genre:   </span></i>{{ Anime.genre|joiner }}</li>
                 <li class='status'><i><span>Status:   </span></i>{{ Anime.status }}</li>
-                <li class='type'><i><span>Type:   </span></i> Not Indexed</li>
+                <li class='type'><i><span>Type:   </span></i> {{ Anime.type }}</li>
                 <li class='description'><i><span>Description:   </span></i>{{ Anime.summary }}</li>
                 <li style="display:none" class="associated_url" data-url="{{ Anime.url }}"></li>
             </ul>

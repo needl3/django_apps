@@ -5,3 +5,4 @@ from . import models
 admin.site.register(models.Projects)
 admin.site.register(models.Me)
 admin.site.register(models.Events)
+admin.site.register(models.Contacts)

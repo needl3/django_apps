@@ -1,19 +1,37 @@
+#!/usr/bin/python3
 import requests
 import string
 from bs4 import BeautifulSoup
 import csv
 import time
 import logging
+import os
+
+def setup_logger(name, log_file, level=logging.INFO):
+    """To setup as many loggers as you want"""
+
+    handler = logging.FileHandler(log_file)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+
+    return logger
 
 class ScrapeAnime:
 	def __init__(self):
 		self.base = "https://gogoanime.sk"
 		self.all_anime = "/anime-list-"
 		self.writer = None
-		logging.basicConfig(filename='anime_scrape.log', level=logging.INFO)
+
+		# Logfile for general scrape log
+		self.log_scrape_general = setup_logger('second_logger', '.scrape.log')
+
+		# Log handler for resumable fetch
+		self.log_scrape_stat = None
 
 	def scrapeAnimeDetails(self,url):
-		logging.info('Scraping anime details for: '+url)
+		self.log_scrape_general.info('Scraping anime details for: '+url)
 		'''
 			Fetch details of that anime
 			url = <https://gogoanime.sk/category/anime-url>
@@ -37,18 +55,21 @@ class ScrapeAnime:
 
 		episodes = soup_details.find('ul', id='episode_page').find_all('li')[-1].a['ep_end']
 
+		anime_type = sub_details[0].a.text
+
 		db_val = {"Summary":summary,
 				 "Genre":genre,
 				 "Episodes":episodes,
 				 "Status":status,
 				 "Image":image_link,
-				 "Released": released
+				 "Released": released,
+				 "Type": anime_type,
 				 }
 		return db_val
 
-	def scrapeAnime(self, c, file=None, db_obj=None, page_number=1):
+	def scrapeAnime(self, c, file=None, db_obj=None, page_number=1, last_anime=None):
 
-		logging.info('[+] Fetching for '+c+" in page "+str(page_number))
+		self.log_scrape_general.info('[+] Fetching for '+c+" in page "+str(page_number))
 
 		# Url for all anime list starting with letter <c>
 		url=self.base+self.all_anime+c.upper()+"?page="+str(page_number)
@@ -58,11 +79,16 @@ class ScrapeAnime:
 		soup = BeautifulSoup(html, 'html.parser')
 
 		anime_list = soup.find('div', class_='anime_list_body').ul.find_all('li')
+		if(last_anime):
+			next_anime_index = None
+			for next_anime_index in range(len(anime_list)):
+				if(anime_list[next_anime_index].a.text == last_anime):
+					break
+			anime_list = anime_list[next_anime_index+1:]
 
 		# For writing title:url in csv
-		fieldnames = ['Name', 'Image', 'Summary', 'Genre', 'Episodes', 'Status', 'Released', 'Url']
+		fieldnames = ['Name', 'Image', 'Summary', 'Genre', 'Type', 'Episodes', 'Status', 'Released', 'Url']
 		writer = csv.DictWriter(file, fieldnames=fieldnames)
-		writer.writeheader()
 
 		for anime in anime_list:
 			# Find basic info i.e URL to anime
@@ -70,28 +96,52 @@ class ScrapeAnime:
 			url = anime.a.get('href')
 
 
-			try:
-				db_val = self.scrapeAnimeDetails(self.base+url)
-				db_val['Name'] = title
-				db_val['Url'] = url
-				writer.writerow(db_val)
+			db_val = self.scrapeAnimeDetails(self.base+url)
+			db_val['Name'] = title
+			db_val['Url'] = url.split('/category/')[1]
+			writer.writerow(db_val)
 
-				time.sleep(1)
-			except Exception as e:
-				logging.debug("Exception for "+ title + "\n URL: "+url+"\n Exception: "+e)
-				pass
+			self.log_scrape_stat.info(f'{c},{page_number},{db_val["Name"]}')
+	
+			time.sleep(1)
 
 
-	def scrapeAll(self, to_save=None):
+	def scrapeAll(self, to_save):
 		file = None
-		if to_save:
-			file = open(to_save,'a')
-		for i in string.ascii_uppercase:
-			total_pages=int(self.findMaxPages(i))
-			for page_number in range(1,total_pages+1):
-				self.scrapeAnime(i, file, page_number)
-				time.sleep(1)
-			break
+
+		# Logfile for resuming scrapes
+		scrape_log_file = '.scrape_stat.log'
+
+		with open(to_save,'a') as file:
+			alphabets = None
+			page_start = 1
+			last_anime = None
+
+			try:
+				alphabets = open(scrape_log_file, 'r').readlines()[-1].strip().split(',')
+				page_start = alphabets[1]
+				last_anime = alphabets[2]
+				alphabets = string.ascii_uppercase[string.ascii_uppercase.index(alphabets[0]):]
+				print("Resuming scrape from alphabet", alphabets[0], ' and page ', page_start)
+			except:
+				alphabets = string.ascii_uppercase
+
+			self.log_scrape_stat = setup_logger('first_logger', scrape_log_file)
+
+			for i in alphabets:
+				total_pages=int(self.findMaxPages(i))
+
+				print("Fetching for alphabet ", i)
+
+				for page_number in range(int(page_start),total_pages+1):
+					print("Fetching for page ", page_number)
+					self.scrapeAnime(i, file=file, page_number=page_number, last_anime=last_anime)
+
+					self.log_scrape_general.info(f"Exception during scraping letter {i} in page {page_number}")
+
+					time.sleep(1)
+				page_start = 1
+			os.remove(scrape_log_file)
 
 	def findMaxPages(self, alphabet=None, max_page=1, page=None):
 		# First find all shown pages
@@ -127,14 +177,14 @@ class ScrapeAnime:
 		'''
 		with open(f, 'r') as f_read:
 			with open(to_save, 'w') as f_write:
-				fieldnames = ['Name', 'Image', 'Summary', 'Genre', 'Episodes', 'Status', 'Url']
+				fieldnames = ['Name', 'Image', 'Summary', 'Genre', 'Type', 'Episodes', 'Status', 'Url']
 				writer = csv.DictWriter(f_write, fieldnames=fieldnames)
 				writer.writeheader()
 
 				reader = csv.DictReader(f_read, fieldnames=['title', 'urls'])
 				count = 1
 				for row in reader:
-					logging.info("[+] Writing row "+str(count))
+					self.log_scrape_general.info("[+] Writing row "+str(count))
 					html = requests.get(self.base+row['urls']).text
 
 					soup = BeautifulSoup(html, 'html.parser')
@@ -233,18 +283,17 @@ class DatabaseManagement:
 	def __init__(self):
 		self.base = 'https://gogoanime.sk'
 		self.writer = None
-	def updateNewSeasons(self, file=None, models=None):
-		logging.info("Updating new seasoned animes")
+		self.log_scrape_general = setup_logger('database_update_logger', '.database_update.log')
+
+	def updateNewSeasons(self, models):
 		'''
 			Updates HOT tab
-			This should be cron jobed every 7 days to update new animes in main database
+			This should be cron jobed every day to update new animes in main database
 		'''
 
 		new_page = "new-season.html"
-		if file != None:
-			file = open(file,'w')
-			self.writer = csv.DictWriter(file, fieldnames=['Name',  'Url'])
-			self.writer.writeheader()
+
+		details_all = list()
 
 		for i in range(1, int(ScrapeAnime().findMaxPages(page=new_page))+1):
 			url = self.base+"/"+new_page+"?page="+str(i)
@@ -253,34 +302,41 @@ class DatabaseManagement:
 			new = soup.find('div', class_='last_episodes').ul.find_all('li')
 			details = [{'Name':i.text.strip().split('\n')[0], 'Image':i.div.a.img['src'], 'Url':i.div.a['href'].split('/category/')[1]} for i in new]
 			for i in details:
-				if file != None:
-					self.writer.writerow({'Name':i['Name'], 'Url':i['Url']})
-				if models != None:
-					# Check if I have this new anime in database
+				try:
+					models.Video.objects.get(name=i['Name'])
+					# If I have that anime, check if it's in Hot table
 					# If not make an entry
 					try:
-						models.Video.objects.get(name=i['Name'])
-						# If I have that anime, check if it's in Hot table
-						# If not make an entry
-						try:
-							models.Hot.objects.get(name=i['Name'])
-						except:
-							models.Hot(name=i['Name']).save()
+						models.Hot.objects.get(name=i['Name'])
 					except:
-						# Since this anime is not in Video table
-						# Make an entry with all it's details
-						l_details = ScrapeAnime().scrapeAnimeDetails(self.base+"/category/"+i['Url'])
-						models.Video(name=i['Name'],
-								url=i['Url'],
-								image_link=l_details['Image'],
-								summary=l_details['Summary'],
-								genre=l_details['Genre'],
-								episodes=l_details['Episodes'],
-								status=l_details['Status'],
-								released=l_details['Released'],
-						).save()
-		if file != None:
-			file.close()
+						print("New popular anime in town: "+i['Name'])
+						models.Hot(name=i['Name']).save()
+				except:
+					# Since this anime is not in Video table
+					# Make an entry with all it's details
+					print("New Anime in town: "+i['Name'])
+					l_details = ScrapeAnime().scrapeAnimeDetails(self.base+"/category/"+i['Url'])
+					models.Video(name=i['Name'],
+							url=i['Url'],
+							image_link=l_details['Image'],
+							summary=l_details['Summary'],
+							genre=l_details['Genre'],
+							episodes=l_details['Episodes'],
+							status=l_details['Status'],
+							released=l_details['Released'],
+					).save()
+					models.Hot(name=i['Name']).save()
+
+			# Remove expired "Anime in Hot Model"
+			details_all += [list(i.values())[0] for i in details]
+
+		for anime in models.Hot.objects.all():
+			if anime.name not in details_all:
+				print("Deleting "+anime.name+" from Hot")
+				try:
+					models.Hot.objects.get(name=anime.name).delete()
+				except:
+					print(anime.name + " doesn't exist in the Hot Table")
 	def updateNewReleases(self, models):
 		'''
 			Updates NewReleases Section i.e recent;y released new episodes
@@ -294,8 +350,10 @@ class DatabaseManagement:
 				try:
 					models.NewReleases.objects.get(name=n)
 				except:
+					print("New Release found for the anime")
 					models.NewReleases(name=n).save()
 			except:
+				print("Brand new anime in town: "+n)
 				db_val = ScrapeAnime().scrapeAnimeDetails(self.base+"/category/"+ep[1])
 				models.Video(
 					name = n,
@@ -313,6 +371,15 @@ class DatabaseManagement:
 			ob.episodes = ep[0]
 			ob.save()
 
+		# Remove expired "Anime"
+		for anime in models.NewReleases.objects.all():
+			if anime.name not in new_list.keys():
+				print("Deleting "+anime.name+" from NewReleases")
+				try:
+					models.NewReleases.objects.get(name=anime.name).delete()
+				except:
+					print(anime.name + " doesn't exist in the NewReleases Table")
+
 	def updatePopular(self, models):
 		new_list = ScrapeAnime().scrapePopular()	# Returns list of {Name:url}
 		for n,url in new_list.items():
@@ -321,8 +388,10 @@ class DatabaseManagement:
 				try:
 					models.Popular.objects.get(name=n)
 				except:
+					print("New Popular anime in town: "+n)
 					models.Popular(name=n).save()
 			except:
+				print("Brand New Anime in town: "+n)
 				db_val = ScrapeAnime().scrapeAnimeDetails(self.base+"/category/"+url)
 				models.Video(
 					name = n,
@@ -335,5 +404,27 @@ class DatabaseManagement:
 				).save()
 				models.Popular(name=n).save()
 
+		# Remove expired "Anime"
+		for anime in models.Popular.objects.all():
+			if anime.name not in new_list.keys():
+				print("Deleting "+anime.name+" from Popular")
+				try:
+					models.Popular.objects.get(name=anime.name).delete()
+				except:
+					print(anime.name + " doesn't exist in the Popular Table")
+
+	def updateOngoing(self, models):
+		old_ongoing = models.Video.objects.filter(status="Ongoing")
+		for old_anime in old_ongoing:
+			try:
+				stat = ScrapeAnime().scrapeAnimeDetails(self.base+"/category/"+old_anime.url)['Status']
+			except AttributeError:
+				print("Invalid Url ", old_anime.url)
+			print("Anime: ", old_anime.name, "New Status: ", stat)
+			if(stat != "Ongoing"):
+				print("Changing stat of ", old_anime.name, "to ", stat)
+				old_anime.status = stat
+				old_anime.save()
 if __name__=="__main__":
-	DatabaseManagement().updateNewReleases()
+	ScrapeAnime().scrapeAll('UpdatedAnimeDetails.csv')
+	os.system("touch done.txt")
