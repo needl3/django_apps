@@ -9,3 +9,6 @@ staticfiles
 todo
 *.env
 *.sqlite
+*.env
+start.sh
+todo
