@@ -6,8 +6,6 @@ This project includes apps I made while learning django
 - [X] [**My portfoio**](https://anishchapagai.com.np)
 - [X]	[**Aniwatch**](https://anishchapagai.com.np/aniwatch) - A web client for anime
 
-> If redirection fails, [click here](https://an1sh.herokuapp.com)
-
 ## To do
 
 #### Portfolio
