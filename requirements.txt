@@ -2,7 +2,7 @@ asgiref==3.5.0
 beautifulsoup4==4.11.1
 certifi==2021.10.8
 charset-normalizer==2.0.12
-Django==4.0.4
+Django==4.0.6
 django-crontab==0.7.1
 idna==3.3
 mssql-django==1.1.3
