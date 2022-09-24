@@ -1,10 +1,6 @@
 #!/bin/sh
-LOG_FILE=/home/needle/timer_update.log
-
-if [[ -z "${UPDATE_TIME}" ]];then
-	echo "No variable \$UPDATE_TIME defined. Using default 1 day timing" > $LOG_FILE
-	UPDATE_TIME=$((( 24 * 60 * 60 )))
-fi
+LOG_FILE=timer_update.log
+UPDATE_TIME=$((( 24 * 60 * 60 ))) # 1 day
 
 # $APP_PATH is exported as environment variable duirng deployment
 . $APP_PATH/antenv/bin/activate
