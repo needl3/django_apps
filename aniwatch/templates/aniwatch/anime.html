@@ -29,7 +29,7 @@
         <h2 style='text-align: center; letter-spacing: 3px;'>{{ Anime.name }} | Episode:{{ iframe }}</h2>
     {% endif %}
     <div class='player' {% if not iframe %} style="display:none" {% endif %}>
-        <iframe src="https://{{ Servers.0.Url }}" allowfullscreen="true" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+        <iframe src="{{ Servers.0.Url }}" allowfullscreen="true" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
     </div>
     <div class='below'>
         <div class='servers' style="display: none;">
